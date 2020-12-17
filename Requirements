@@ -1,2 +1,17 @@
 Registration
 Login
+
+For User table:   
+userDataId   
+E-mail address (unique)  
+first name 
+last name
+billing address 
+registration date
+password
+phone number 
+
+For User generated tables:  
+userDataId  
+wishListTable
+cartTable
