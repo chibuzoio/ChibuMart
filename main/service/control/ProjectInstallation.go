@@ -8,12 +8,32 @@ import (
  
 func CreateProjectTables() {
 	tableCollection := []string{               
-		"create table if not exists userdatatable (" +
-			"userDataId bigint(20) unsigned not null auto_increment, " + 
+		"create table if not exists chibumart (" +
+			"chibuMartId bigint(20) unsigned not null auto_increment, " + 
 			"firstName varchar(23), " +
 			"lastName varchar(23), " +     
-			"primary key(userDataId) " + 
+			"gender varchar(11), " +
+			"emailAddress varchar(55), " +
+			"phoneNumber varchar(23), " +
+			"town varchar(55), " +
+			"state varchar(55), " +
+			"country varchar(55), " +
+			"password varchar(333) not null, " +
+			"regDate varchar(23) not null, " +
+			"profilePicture varchar(55), " +
+			"billingAddressId bigint(20) unsigned, " +
+			"primary key(chibuMartId), " +
+			"unique key(userName) " +
 			") engine = InnoDB default charset = utf8", 
+            
+		"create table if not exists usertable (" + 
+			"userTableId bigint(20) unsigned not null auto_increment, " +
+			"chibuMartId bigint(20) unsigned not null, " + 
+			"archiveTableName varchar(111) not null, " +
+			"virtualAccountTable varchar(111) not null, " + 
+			"primary key(userTableId), " +           
+			"unique key(chibuMartId) " +          
+			") engine = InnoDB default charset = utf8",              
 	};                                  
 
 	connector := utility.GetConnection();
@@ -38,7 +58,7 @@ func CreateProjectDatabase() {
 		utility.Println("Connection to mysql server gotten successfully");
 	}
 	 
-	_, executionError := connector.Exec("create database if not exists assignment");
+	_, executionError := connector.Exec("create database if not exists chibumart");
 
 	if executionError != nil {
 		utility.Exception(executionError);

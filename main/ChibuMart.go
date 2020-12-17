@@ -6,6 +6,7 @@ import (
 )
       
 func main() {
+    gin.SetMode(gin.ReleaseMode);
 	router := gin.Default();
 	router.StaticFile("/", "chibu/index.html");
 	router.GET("/install", service.Install);    
