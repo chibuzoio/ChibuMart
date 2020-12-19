@@ -20,6 +20,10 @@ type TableCompositeParts struct {
 	memberId int;     
 }    
 
+func GenerateSessionToken(email string) string {
+	return email + fmt.Sprintf("%d", time.Now().Unix());
+}
+
 func GenerateInterfaceString(collectionArray []interface{}) string {
 	return fmt.Sprintf("%v", collectionArray);     
 }        

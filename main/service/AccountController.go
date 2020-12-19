@@ -9,7 +9,28 @@ import (
 	
 	"github.com/gin-gonic/gin";   
 )
-     
+
+func RegisterUser(context *gin.Context) {
+    var registrationJSON model.Registration;
+    
+    context.Bind(&registrationJSON);
+    
+    token := utility.GenerateSessionToken(registrationJSON.EmailAddress);
+    
+    context.SetCookie("token", token, 3600, "", "", false, true);
+    
+    if (control.DoesEmailExists()) {
+        // abort registration and return error message to the client
+    } else {
+     // proceed with registration   
+    }
+    
+    if email doesn't exists, 
+        StoreRegistrationData() 
+        GenerateTableNames()
+        StoreGeneratedTableNames()
+} 
+
 func FetchUserData(context *gin.Context) {
     var userDataId int;
     var firstName, lastName string;

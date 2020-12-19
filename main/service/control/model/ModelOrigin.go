@@ -9,6 +9,11 @@ type UserData struct {
     FirstName string `json:"firstName" binding:"required"`; 
 }
 
+type Registration struct {	
+    EmailAddress string `json:"emailAddress" binding:"required"`;   
+    Password string `json:"password" binding:"required"`; 
+}
+
 type AllUserData struct {
     LastName string `json:"lastName" binding:"required"`;   
     UserDataId int `json:"userDataId" binding:"required"`;   
