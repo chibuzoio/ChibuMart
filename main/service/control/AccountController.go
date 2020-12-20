@@ -2,7 +2,7 @@ package control
 
 import (  
 	"./utility";                  
-    "./model";
+    "./model";            
 )
          
 func PostUserData(userDataJSON model.UserData) string {

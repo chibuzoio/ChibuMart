@@ -7,22 +7,25 @@ import (
     "./control/model";
     "./control/utility";
 	
-	"github.com/gin-gonic/gin";   
+	"github.com/gin-gonic/gin";    
+    "github.com/gin-contrib/sessions";
 )
 
 func RegisterUser(context *gin.Context) {
     var registrationJSON model.Registration;
     
+    session := sessions.Default(context);
+    
     context.Bind(&registrationJSON);
     
-    token := utility.GenerateSessionToken(registrationJSON.EmailAddress);
-    
-    context.SetCookie("token", token, 3600, "", "", false, true);
-    
-    if (control.DoesEmailExists()) {
-        // abort registration and return error message to the client
+    if (control.DoesEmailExists(registrationJSON.EmailAddress)) {
+        // abort registration and return error message to the client      
+        
     } else {
-     // proceed with registration   
+        // proceed with registration   
+        session.Set("emailAddress", registrationJSON.EmailAddress);
+        session.Save();
+ 
     }
     
     if email doesn't exists, 

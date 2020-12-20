@@ -4,6 +4,10 @@ import (
 
 )
 
+type RegistrationResponse struct {      
+    
+}     
+
 type UserData struct {	
     LastName string `json:"lastName" binding:"required"`;   
     FirstName string `json:"firstName" binding:"required"`; 
@@ -19,5 +23,5 @@ type AllUserData struct {
     UserDataId int `json:"userDataId" binding:"required"`;   
     FirstName string `json:"firstName" binding:"required"`; 
 }
-  
+
     
