@@ -11,27 +11,29 @@ import (
     "github.com/gin-contrib/sessions";
 )
 
-func RegisterUser(context *gin.Context) {
-    var registrationJSON model.Registration;
+func RegisterUser(context *gin.Context) { 
+    var registrationJSON model.RegistrationRequest;
     
     session := sessions.Default(context);
     
     context.Bind(&registrationJSON);
     
-    if (control.DoesEmailExists(registrationJSON.EmailAddress)) {
+    if (utility.DoesEmailExists(registrationJSON.EmailAddress)) {
         // abort registration and return error message to the client      
         
     } else {
         // proceed with registration   
         session.Set("emailAddress", registrationJSON.EmailAddress);
         session.Save();
- 
+        
+        // return registered memberId
+        chibuMartId := control.StoreRegistrationData(registrationJSON);
+        
+        if (chibuMartId > 0) {
+            userTableJSON := control.GenerateTableNames(chibuMartId);
+            control.StoreGeneratedTableNames(userTableJSON);
+        } 
     }
-    
-    if email doesn't exists, 
-        StoreRegistrationData() 
-        GenerateTableNames()
-        StoreGeneratedTableNames()
 } 
 
 func FetchUserData(context *gin.Context) {
@@ -72,7 +74,7 @@ func PostUserData(context *gin.Context) {
         
     context.Bind(&userDataJSON);
         
-    response := control.PostUserData(userDataJSON)
+    response := control.PostUserData(userDataJSON);
     
 //         context.JSON(http.StatusOK, userDataJSON);                       
     context.JSON(http.StatusOK, gin.H{"theResponse" : response});                 

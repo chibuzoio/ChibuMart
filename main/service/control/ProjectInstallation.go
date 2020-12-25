@@ -22,15 +22,18 @@ func CreateProjectTables() {
 			"regDate varchar(23) not null, " +
 			"profilePicture varchar(55), " +
 			"billingAddressId bigint(20) unsigned, " +
+			"passwordTimestamp varchar(23) not null, " + 
 			"primary key(chibuMartId), " +
-			"unique key(userName) " +
+			"unique key(emailAddress) " +
 			") engine = InnoDB default charset = utf8", 
             
 		"create table if not exists usertable (" + 
 			"userTableId bigint(20) unsigned not null auto_increment, " +
-			"chibuMartId bigint(20) unsigned not null, " + 
-			"archiveTableName varchar(111) not null, " +
-			"virtualAccountTable varchar(111) not null, " + 
+			"chibuMartId bigint(20) unsigned not null, " +          
+			"notificationTableName varchar(111) not null, " +
+			"productReceptionTable varchar(111) not null, " +
+			"productWishListTable varchar(111) not null, " +
+			"stockroomCartTable varchar(111) not null, " +
 			"primary key(userTableId), " +           
 			"unique key(chibuMartId) " +          
 			") engine = InnoDB default charset = utf8",              
