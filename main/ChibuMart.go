@@ -19,8 +19,10 @@ func main() {
     
 	router.StaticFile("/", "chibu/index.html");
 	router.GET("/install", service.Install);    
-    router.GET("/fetchuserdata", service.FetchUserData);
+    router.POST("/login", service.LoginUser);
+    router.POST("/register", service.RegisterUser);
 	router.POST("/postuserdata", service.PostUserData);                           
+    router.GET("/fetchuserdata", service.FetchUserData);
     router.Run();                 
 }                       
 

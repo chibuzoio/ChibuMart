@@ -1,6 +1,7 @@
 package service  
 
 import ( 
+    "strings";
     "net/http";     
     
 	"./control";
@@ -11,6 +12,36 @@ import (
     "github.com/gin-contrib/sessions";
 )
 
+func LoginUser(context *gin.Context) {   
+    var loginRequest model.LoginRequest;
+    var loginResponse model.LoginResponse;
+    
+    session := sessions.Default(context);
+    
+    context.Bind(&loginRequest);
+    
+    loginRequest.EmailAddress = strings.TrimSpace(loginRequest.EmailAddress);
+    
+    if (utility.DoesEmailExists(loginRequest.EmailAddress)) {
+        if (control.IsPasswordValid(loginRequest)) {
+            session.Set("emailAddress", loginRequest.EmailAddress);
+            session.Save();
+        
+            loginResponse.Data = control.GetUserLoginData(loginRequest.EmailAddress);
+            loginResponse.Message = "Login successful";
+            loginResponse.Success = true;
+        } else {
+            loginResponse.Message = "Email or password is wrong";
+            loginResponse.Success = false;
+        }
+    } else {
+        loginResponse.Message = "Email or password is wrong";
+        loginResponse.Success = false;
+    }
+    
+    context.JSON(http.StatusOK, loginResponse);
+}
+
 func RegisterUser(context *gin.Context) { 
     var registrationRequest model.RegistrationRequest;
     var registrationResponse model.RegistrationResponse;
@@ -18,6 +49,8 @@ func RegisterUser(context *gin.Context) {
     session := sessions.Default(context);
     
     context.Bind(&registrationRequest);
+ 
+    registrationRequest.EmailAddress = strings.TrimSpace(registrationRequest.EmailAddress);
     
     if (utility.DoesEmailExists(registrationRequest.EmailAddress)) {
         registrationResponse.Success = false;

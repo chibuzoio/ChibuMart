@@ -79,7 +79,7 @@ func StoreRegistrationData(registrationJSON) int {
     utility.Exception(error);
     
     _, error = stmt.Exec(0, "", "", "", emailAddress, "", "", "", "", 
-        passwordHash, theDate, "", "", theTime);
+        passwordHash, theDate, "", 0, theTime);
     
     utility.Exception(error);
 
