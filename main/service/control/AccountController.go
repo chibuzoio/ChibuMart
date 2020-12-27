@@ -3,9 +3,12 @@ package control
 import (  
     "fmt";         
     "time";
+	"math/big";          
     
     "./model";             
 	"./utility";                  
+    
+	"golang.org/x/crypto/bcrypt";
 )
      
 func StoreGeneratedTableNames(userTableJSON model.UserTable) {
@@ -49,7 +52,7 @@ func GenerateTableNames(chibuMartId int) *model.UserTable {
 	return userTableJSON;
 }
 
-func StoreRegistrationData(registrationJSON) {
+func StoreRegistrationData(registrationJSON) int {
 	connector := utility.GetConnection(); 
 	password := registrationJSON.Password;
 	emailAddress := registrationJSON.EmailAddress; 
@@ -64,13 +67,46 @@ func StoreRegistrationData(registrationJSON) {
 	timeNow := time.Now();              
     theDate := timeNow.Format("2006-01-02 15:04:05");               
     theTime := timeNow.Unix();               
-    firstSalt := userName[0 : 5];                   
+    firstSalt := emailAddress[0 : 5];                   
     thePassword := string(firstSalt) + string(password) + fmt.Sprintf("%d", theTime);             
 
     passwordHash, error := bcrypt.GenerateFromPassword([]byte(thePassword), bcrypt.DefaultCost);                 
 
     utility.Exception(error);
+    
+    stmt, error := connector.Prepare(query);
+    
+    utility.Exception(error);
+    
+    _, error = stmt.Exec(0, "", "", "", emailAddress, "", "", "", "", 
+        passwordHash, theDate, "", "", theTime);
+    
+    utility.Exception(error);
 
+    stmt.Close();
+    
+    var chibuMartId int;
+    query = "select chibuMartId from chibumart where emailAddress = ?";
+    
+    resultSet, error := connector.Prepare(query);
+    
+    utility.Exception(error);
+    
+    rows, error := resultSet.Query(emailAddress);
+    
+    utility.Exception(error);
+    
+    for (rows.Next()) {
+        error = rows.Scan(&chibuMartId);
+        
+        utility.Exception(error);
+    }
+    
+    resultSet.Close();
+    rows.Close();
+    connector.Close();
+    
+    return chibuMartId;
 }    
 
 func PostUserData(userDataJSON model.UserData) string {

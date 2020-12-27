@@ -12,28 +12,37 @@ import (
 )
 
 func RegisterUser(context *gin.Context) { 
-    var registrationJSON model.RegistrationRequest;
+    var registrationRequest model.RegistrationRequest;
+    var registrationResponse model.RegistrationResponse;
     
     session := sessions.Default(context);
     
-    context.Bind(&registrationJSON);
+    context.Bind(&registrationRequest);
     
-    if (utility.DoesEmailExists(registrationJSON.EmailAddress)) {
-        // abort registration and return error message to the client      
-        
+    if (utility.DoesEmailExists(registrationRequest.EmailAddress)) {
+        registrationResponse.Success = false;
+        registrationResponse.Message = "Registration failed!";
     } else {
         // proceed with registration   
-        session.Set("emailAddress", registrationJSON.EmailAddress);
+        session.Set("emailAddress", registrationRequest.EmailAddress);
         session.Save();
         
         // return registered memberId
-        chibuMartId := control.StoreRegistrationData(registrationJSON);
+        chibuMartId := control.StoreRegistrationData(registrationRequest);
         
         if (chibuMartId > 0) {
             userTableJSON := control.GenerateTableNames(chibuMartId);
             control.StoreGeneratedTableNames(userTableJSON);
-        } 
+            
+            registrationResponse.Success = true;
+            registrationResponse.Message = "Registration successful!";
+        } else {
+            registrationResponse.Success = false;
+            registrationResponse.Message = "Registration failed!";   
+        }
     }
+    
+    context.JSON(http.StatusOK, registrationResponse);
 } 
 
 func FetchUserData(context *gin.Context) {
