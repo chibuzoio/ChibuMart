@@ -98,7 +98,7 @@ func StoreBase64Png(imageString, imageName string) {
 
     log.Println(bounds, formatString);
 
-    storage, error := os.Create("assignment/image/" + imageName);
+    storage, error := os.Create("chibumart/image/" + imageName);
 
     Exception(error);
 
@@ -120,7 +120,7 @@ func StoreBase64Jpeg(imageString, imageName string) {
 
     log.Println(bounds, formatString);
 
-    storage, error := os.Create("assignment/image/" + imageName);
+    storage, error := os.Create("chibumart/image/" + imageName);
 
     Exception(error);
 
@@ -144,7 +144,7 @@ func StoreAverageImage(imageString, imageName string) {
 
 	imageName = strings.Replace(imageName, ".jpg", "average.jpg", -1);
 
-    storage, error := os.Create("assignment/image/" + imageName);
+    storage, error := os.Create("chibumart/image/" + imageName);
 
     Exception(error);     
 
@@ -166,7 +166,7 @@ func StoreThumbnailImage(imageString, imageName string) {
 
 	imageName = strings.Replace(imageName, ".jpg", "thumbnail.jpg", -1);
 
-    storage, error := os.Create("assignment/image/" + imageName);
+    storage, error := os.Create("chibumart/image/" + imageName);
 
     Exception(error);     
 
@@ -176,12 +176,12 @@ func StoreThumbnailImage(imageString, imageName string) {
 } 
 
 func GenerateMediumImage(mediumImageName string) {
-	_, error := os.Stat("/assignment/image/" + mediumImageName);
+	_, error := os.Stat("/chibumart/image/" + mediumImageName);
 	
 	if error != nil {
 		imageName := strings.Replace(mediumImageName, "average.jpg", ".jpg", -1);
 		
-		imageFile, error := os.Open("assignment/image/" + imageName);
+		imageFile, error := os.Open("chibumart/image/" + imageName);
 		
 		Exception(error);
 		
@@ -195,7 +195,7 @@ func GenerateMediumImage(mediumImageName string) {
 	
 	    log.Println(bounds, formatString);
 	
-		storage, error := os.Create("assignment/image/" + mediumImageName);
+		storage, error := os.Create("chibumart/image/" + mediumImageName);
 	
 	    Exception(error);     
 	
@@ -206,12 +206,12 @@ func GenerateMediumImage(mediumImageName string) {
 } 
 
 func CompressExistingImage(thumbnailName string) {
-	_, error := os.Stat("/assignment/image/" + thumbnailName);
+	_, error := os.Stat("/chibumart/image/" + thumbnailName);
 	
 	if error != nil {
 		imageName := strings.Replace(thumbnailName, "thumbnail.jpg", ".jpg", -1);
 		
-		imageFile, error := os.Open("assignment/image/" + imageName);
+		imageFile, error := os.Open("chibumart/image/" + imageName);
 		
 		Exception(error);
 		
@@ -225,7 +225,7 @@ func CompressExistingImage(thumbnailName string) {
 	
 	    log.Println(bounds, formatString);
 	
-		storage, error := os.Create("assignment/image/" + thumbnailName);
+		storage, error := os.Create("chibumart/image/" + thumbnailName);
 	
 	    Exception(error);     
 	
@@ -278,10 +278,10 @@ func ErrorStackTrace(exception error, errorLocation string) {
 }
 
 func Println(statement string) {
-    _, error := os.Stat("assignment/assignment.txt");
+    _, error := os.Stat("chibumart/chibumart.txt");
 
     if error != nil {   
-        logFile, error := os.OpenFile("assignment/assignment.txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644);
+        logFile, error := os.OpenFile("chibumart/chibumart.txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644);
 
         log.Println("File doesn't exist; " + fmt.Sprintf("%v", error));
 
@@ -290,7 +290,7 @@ func Println(statement string) {
 
         logFile.Close();
     } else {
-        logFile, error := os.OpenFile("assignment/assignment.txt", os.O_WRONLY|os.O_APPEND, 0644);
+        logFile, error := os.OpenFile("chibumart/chibumart.txt", os.O_WRONLY|os.O_APPEND, 0644);
 
         log.Println("File does exist; " + fmt.Sprintf("%v", error));
 
@@ -302,10 +302,10 @@ func Println(statement string) {
 }
 
 func Exception(exception error) {
-    _, error := os.Stat("assignment/assignment.txt");
+    _, error := os.Stat("chibumart/chibumart.txt");
  
     if error != nil {   
-        logFile, error := os.OpenFile("assignment/assignment.txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644);
+        logFile, error := os.OpenFile("chibumart/chibumart.txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644);
 
         log.Println("File doesn't exist; " + fmt.Sprintf("%v", error));
 
@@ -317,7 +317,7 @@ func Exception(exception error) {
 
         logFile.Close();
     } else {
-        logFile, error := os.OpenFile("assignment/assignment.txt", os.O_WRONLY|os.O_APPEND, 0644);
+        logFile, error := os.OpenFile("chibumart/chibumart.txt", os.O_WRONLY|os.O_APPEND, 0644);
 
         log.Println("File does exist; " + fmt.Sprintf("%v", error));
 
@@ -352,7 +352,7 @@ func SearchStringArray(composite []string, searchKey string) bool {
 }
 
 func GetConnection() *sql.DB { 
-	connector, error := sql.Open("mysql", "computebone:2352C/C++solu+++;@/assignment"); 
+	connector, error := sql.Open("mysql", "computebone:2352C/C++solu+++;@/chibumart"); 
 
 /*    
     connector.SetMaxOpenConns(777);
@@ -361,7 +361,7 @@ func GetConnection() *sql.DB {
 
     Exception(error);
 
-	log.Println("Connection to assignment database acquired!!!!!!");
+	log.Println("Connection to chibumart database acquired!!!!!!");
 	
 	return connector;
 }
