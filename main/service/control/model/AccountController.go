@@ -4,6 +4,11 @@ import (
 
 )
 
+type LogoutResponse struct {            
+    Success bool `json:"success"`;
+    Message string `json:"message"`;
+}
+
 type LoginData struct {
     ChibuMartId int `json:"chibuMartId"`;
     FirstName string `json:"firstName"`;
@@ -12,6 +17,7 @@ type LoginData struct {
     EmailAddress string `json:"emailAddress"`;
     PhoneNumber string `json:"phoneNumber"`;
     Town string `json:"town"`;
+    State string `json:"state"`;
     Country string `json:"country"`;
     RegDate string `json:"regDate"`;
     ProfilePicture string `json:"profilePicture"`;
@@ -32,6 +38,7 @@ type LoginResponse struct {
 type RegistrationResponse struct {      
     Success bool `json:"success"`;
     Message string `json:"message"`;
+    Data LoginData `json:"data"`;
 }     
 
 type RegistrationRequest struct {	

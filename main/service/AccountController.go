@@ -12,6 +12,21 @@ import (
     "github.com/gin-contrib/sessions";
 )
 
+func LogoutUser(context *gin.Context) {
+    session := sessions.Default(context);
+    session.Set("emailAddress", "");
+    session.Clear();
+    session.Options(sessions.Options{MaxAge: -1});
+    session.Save();
+    
+    var logoutResponse model.LogoutResponse;
+    
+    logoutResponse.Success = true;
+    logoutResponse.Message = "Logout successful";
+    
+    context.JSON(http.StatusOK, logoutResponse);     
+}
+
 func LoginUser(context *gin.Context) {   
     var loginRequest model.LoginRequest;
     var loginResponse model.LoginResponse;

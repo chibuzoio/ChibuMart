@@ -10,7 +10,81 @@ import (
     
 	"golang.org/x/crypto/bcrypt";
 )
-     
+
+func GetUserLoginData(emailAddress string) *model.LoginData {
+    var loginData model.LoginData;
+    
+    connector := utility.GetConnection();
+    
+    defer connector.Close();
+       
+    query := "select chibuMartId, firstName, lastName, gender, phoneNumber, town, " + 
+        "state, country, password, regDate, profilePicture, billingAddressId from " +  
+        "chibumart where emailAddress = ?";        
+    
+    resultSet, error := connector.Prepare(query);
+    
+    utility.Exception(error);
+    
+    rows, error := resultSet.Query(emailAddress);
+    
+    utility.Exception(error);
+    
+    for rows.Next() {
+        error = rows.Scan(&loginData.ChibuMartId, &loginData.FirstName, &loginData.LastName, 
+            &loginData.Gender, &loginData.EmailAddress, &loginData.PhoneNumber, &loginData.Town,  
+            &loginData.State, &loginData.Country, &loginData.RegDate, &loginData.ProfilePicture, 
+            &loginData.BillingAddressId);
+        
+        utility.Exception(error);
+    }
+    
+    resultSet.Close();
+    rows.Close();
+    connector.Close();
+    
+    return loginData;
+}
+
+func IsPasswordValid(loginRequest model.LoginRequest) bool {
+    var passwordHash, passwordTimestamp string; 
+    
+    connector := utility.GetConnection();
+    
+    defer connector.Close();
+    
+    query := "select password, passwordTimestamp from chibumart where emailAddress = ?";  
+    
+    resultSet, error := connector.Prepare(query);
+    
+    utility.Exception(error);
+    
+    rows, error := resultSet.Query(loginRequest.EmailAddress);
+    
+    utility.Exception(error);
+    
+    for (rows.Next()) {
+        error = rows.Scan(&passwordHash, &passwordTimestamp);
+        
+        utility.Exception(error);
+    }
+    
+    resultSet.Close();
+    rows.Close();
+    connector.Close();
+
+    firstSalt := loginRequest.EmailAddress[0 : 5];
+    thePassword := string(firstSalt) + string(loginRequest.Password) + fmt.Sprintf("%d", passwordTimestamp);
+    
+    error := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(thePassword));
+
+    if error == nil {
+        return true;
+    } else {
+        return false;
+    }        
+}
+
 func StoreGeneratedTableNames(userTableJSON model.UserTable) {
     connector := utility.GetConnection();
     
