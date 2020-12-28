@@ -2,8 +2,7 @@ package control
 
 import (  
     "fmt";         
-    "time";
-	"math/big";          
+    "time"; 
     
     "./model";             
 	"./utility";                  
@@ -12,7 +11,7 @@ import (
 )
 
 func GetUserLoginData(emailAddress string) *model.LoginData {
-    var loginData model.LoginData;
+    var loginData *model.LoginData;
     
     connector := utility.GetConnection();
     
@@ -46,7 +45,7 @@ func GetUserLoginData(emailAddress string) *model.LoginData {
     return loginData;
 }
 
-func IsPasswordValid(loginRequest model.LoginRequest) bool {
+func IsPasswordValid(loginRequest *model.LoginRequest) bool {
     var passwordHash, passwordTimestamp string; 
     
     connector := utility.GetConnection();
@@ -76,7 +75,7 @@ func IsPasswordValid(loginRequest model.LoginRequest) bool {
     firstSalt := loginRequest.EmailAddress[0 : 5];
     thePassword := string(firstSalt) + string(loginRequest.Password) + fmt.Sprintf("%d", passwordTimestamp);
     
-    error := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(thePassword));
+    error = bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(thePassword));
 
     if error == nil {
         return true;
@@ -85,7 +84,7 @@ func IsPasswordValid(loginRequest model.LoginRequest) bool {
     }        
 }
 
-func StoreGeneratedTableNames(userTableJSON model.UserTable) {
+func StoreGeneratedTableNames(userTableJSON *model.UserTable) {
     connector := utility.GetConnection();
     
 	defer connector.Close();  
@@ -108,7 +107,7 @@ func StoreGeneratedTableNames(userTableJSON model.UserTable) {
 
 func GenerateTableNames(chibuMartId int) *model.UserTable {
 	timeNow := time.Now(); 
-    var userTableJSON model.UserTable;
+    var userTableJSON *model.UserTable;
 	chibuMartIdPart := fmt.Sprintf("%05d", chibuMartId);
 	currentUnixTime := fmt.Sprintf("%d", timeNow.Unix());
 	chibuMartIdPart = chibuMartIdPart[len(chibuMartIdPart) - 5 : len(chibuMartIdPart)];      
@@ -126,10 +125,10 @@ func GenerateTableNames(chibuMartId int) *model.UserTable {
 	return userTableJSON;
 }
 
-func StoreRegistrationData(registrationJSON) int {
+func StoreRegistrationData(registrationRequest *model.RegistrationRequest) int {
 	connector := utility.GetConnection(); 
-	password := registrationJSON.Password;
-	emailAddress := registrationJSON.EmailAddress; 
+	password := registrationRequest.Password;
+	emailAddress := registrationRequest.EmailAddress; 
 
 	defer connector.Close();
      
@@ -183,7 +182,7 @@ func StoreRegistrationData(registrationJSON) int {
     return chibuMartId;
 }    
 
-func PostUserData(userDataJSON model.UserData) string {
+func PostUserData(userDataJSON *model.UserData) string {
     connector := utility.GetConnection();
     
 	defer connector.Close();  

@@ -15,16 +15,16 @@ func DoesEmailExists(emailAddress string) bool {
     
 	resultSet, error := connector.Prepare(query);
 	
-	utility.Exception(error);
+	Exception(error);
 	
 	rows, error := resultSet.Query(emailAddress);
 	
-	utility.Exception(error);
+	Exception(error);
 	
 	for rows.Next() {
 		error = rows.Scan(&chibuMartId);
 		
-		utility.Exception(error);
+		Exception(error);
 	} 
 	
 	resultSet.Close();

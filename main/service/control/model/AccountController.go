@@ -32,13 +32,13 @@ type LoginRequest struct {
 type LoginResponse struct {
     Success bool `json:"success"`;
     Message string `json:"message"`;
-    Data LoginData `json:"data"`;
+    Data *LoginData `json:"data"`;
 }
 
 type RegistrationResponse struct {      
     Success bool `json:"success"`;
     Message string `json:"message"`;
-    Data LoginData `json:"data"`;
+    Data *LoginData `json:"data"`;
 }     
 
 type RegistrationRequest struct {	
