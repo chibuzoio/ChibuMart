@@ -10,8 +10,8 @@ import (
 	"golang.org/x/crypto/bcrypt";
 )
 
-func GetUserLoginData(emailAddress string) *model.LoginData {
-    var loginData *model.LoginData;
+func GetUserLoginData(emailAddress string) model.LoginData {
+    var loginData model.LoginData;
     
     connector := utility.GetConnection();
     
@@ -45,7 +45,7 @@ func GetUserLoginData(emailAddress string) *model.LoginData {
     return loginData;
 }
 
-func IsPasswordValid(loginRequest *model.LoginRequest) bool {
+func IsPasswordValid(loginRequest model.LoginRequest) bool {
     var passwordHash, passwordTimestamp string; 
     
     connector := utility.GetConnection();
@@ -84,7 +84,7 @@ func IsPasswordValid(loginRequest *model.LoginRequest) bool {
     }        
 }
 
-func StoreGeneratedTableNames(userTableJSON *model.UserTable) {
+func StoreGeneratedTableNames(userTableJSON model.UserTable) {
     connector := utility.GetConnection();
     
 	defer connector.Close();  
@@ -105,9 +105,9 @@ func StoreGeneratedTableNames(userTableJSON *model.UserTable) {
 	connector.Close();  
 }
 
-func GenerateTableNames(chibuMartId int) *model.UserTable {
+func GenerateTableNames(chibuMartId int) model.UserTable {
 	timeNow := time.Now(); 
-    var userTableJSON *model.UserTable;
+    var userTableJSON model.UserTable;
 	chibuMartIdPart := fmt.Sprintf("%05d", chibuMartId);
 	currentUnixTime := fmt.Sprintf("%d", timeNow.Unix());
 	chibuMartIdPart = chibuMartIdPart[len(chibuMartIdPart) - 5 : len(chibuMartIdPart)];      
@@ -116,6 +116,8 @@ func GenerateTableNames(chibuMartId int) *model.UserTable {
     notificationTableName := "notification" + currentUnixTime + chibuMartIdPart; 
     productReceptionTable := "productreception" + currentUnixTime + chibuMartIdPart; 
           
+    utility.Println("chibuMartId value here is " + fmt.Sprintf("%d", chibuMartId));
+    
     userTableJSON.ChibuMartId = chibuMartId;
     userTableJSON.StockroomCartTable = stockroomCartTable;
     userTableJSON.ProductWishListTable = productWishListTable;
@@ -125,7 +127,7 @@ func GenerateTableNames(chibuMartId int) *model.UserTable {
 	return userTableJSON;
 }
 
-func StoreRegistrationData(registrationRequest *model.RegistrationRequest) int {
+func StoreRegistrationData(registrationRequest model.RegistrationRequest) int {
 	connector := utility.GetConnection(); 
 	password := registrationRequest.Password;
 	emailAddress := registrationRequest.EmailAddress; 
@@ -182,7 +184,7 @@ func StoreRegistrationData(registrationRequest *model.RegistrationRequest) int {
     return chibuMartId;
 }    
 
-func PostUserData(userDataJSON *model.UserData) string {
+func PostUserData(userDataJSON model.UserData) string {
     connector := utility.GetConnection();
     
 	defer connector.Close();  

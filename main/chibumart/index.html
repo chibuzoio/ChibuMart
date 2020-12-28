@@ -9,10 +9,41 @@
 	</head>                  
 	<body id="assignment">             
    		<div class="websiteBody">   
-            <input type="text" class="firstName" placeholder="First Name"><br>
-            <input type="text" class="lastName" placeholder="Last Name"><br>
+            <input type="text" class="emailAddress" placeholder="Email Address"><br>
+            <input type="password" class="password" placeholder="Password"><br>
             <input type="submit" value="Submit" class="submitUserData">            
    		</div>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>           
+		<script type="text/javascript">
+            (function($) {               
+                $(".submitUserData").click(function() {  
+                    var localPassword = $(".password").val();
+                    var localEmail = $(".emailAddress").val();
+
+                    console.log("localEmail here is " + localEmail);
+                    console.log("localPassword here is " + localPassword);
+                    console.log("osgowu ogi oeo uoisejg eg ljsglksjdlkg jslkdjg lksjglkj");
+                    
+                    if (localEmail.length > 0 && localPassword.length > 0) {               
+                        $.ajax({                                       
+                            type : "POST",
+                            url : "login",
+                            data : JSON.stringify({
+                                emailAddress : localEmail,
+                                password : localPassword
+                            }),
+                            processData : false,
+                            contentType : "application/json"     
+                        }).done(function(theResponse) {                               
+                            console.log("The response here is " + JSON.stringify(theResponse));
+                        }).fail(function(xhr, status, error)  {
+                            var errorMessage = xhr.status + ": " + xhr.statusText;
+                            console.log("Error = " + errorMessage + " the error here is " + error);
+                        });                                              
+                    }               
+                });
+            } (jQuery));              
+		</script>
 	</body>                         
 </html>               
 

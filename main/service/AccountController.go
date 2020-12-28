@@ -28,9 +28,9 @@ func LogoutUser(context *gin.Context) {
 }
 
 func LoginUser(context *gin.Context) {   
-    var loginData *model.LoginData;
-    var loginRequest *model.LoginRequest;
-    var loginResponse *model.LoginResponse;
+    var loginData model.LoginData;
+    var loginRequest model.LoginRequest;
+    var loginResponse model.LoginResponse;
     
     session := sessions.Default(context);
     
@@ -60,8 +60,8 @@ func LoginUser(context *gin.Context) {
 }
 
 func RegisterUser(context *gin.Context) { 
-    var registrationRequest *model.RegistrationRequest;
-    var registrationResponse *model.RegistrationResponse;
+    var registrationRequest model.RegistrationRequest;
+    var registrationResponse model.RegistrationResponse;
     
     session := sessions.Default(context);
     
@@ -130,7 +130,7 @@ func FetchUserData(context *gin.Context) {
 }
 
 func PostUserData(context *gin.Context) { 
-    var userDataJSON *model.UserData;    
+    var userDataJSON model.UserData;    
         
     context.Bind(&userDataJSON);
         
