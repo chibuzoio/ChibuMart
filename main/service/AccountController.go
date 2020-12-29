@@ -42,16 +42,16 @@ func LoginUser(context *gin.Context) {
         if (control.IsPasswordValid(loginRequest)) {
             session.Set("emailAddress", loginRequest.EmailAddress);
             session.Save();
-        
+                 
             loginData = control.GetUserLoginData(loginRequest.EmailAddress);
             loginResponse.Message = "Login successful";
             loginResponse.Data = loginData;
             loginResponse.Success = true;
-        } else {
+        } else {                             
             loginResponse.Message = "Email or password is wrong";
             loginResponse.Success = false;
         }
-    } else {
+    } else {               
         loginResponse.Message = "Email or password is wrong";
         loginResponse.Success = false;
     }

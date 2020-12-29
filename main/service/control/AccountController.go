@@ -73,10 +73,10 @@ func IsPasswordValid(loginRequest model.LoginRequest) bool {
     connector.Close();
 
     firstSalt := loginRequest.EmailAddress[0 : 5];
-    thePassword := string(firstSalt) + string(loginRequest.Password) + fmt.Sprintf("%d", passwordTimestamp);
-    
+    thePassword := firstSalt + loginRequest.Password + passwordTimestamp;
+   
     error = bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(thePassword));
-
+          
     if error == nil {
         return true;
     } else {
@@ -115,9 +115,7 @@ func GenerateTableNames(chibuMartId int) model.UserTable {
     productWishListTable := "productwish" + currentUnixTime + chibuMartIdPart;
     notificationTableName := "notification" + currentUnixTime + chibuMartIdPart; 
     productReceptionTable := "productreception" + currentUnixTime + chibuMartIdPart; 
-          
-    utility.Println("chibuMartId value here is " + fmt.Sprintf("%d", chibuMartId));
-    
+         
     userTableJSON.ChibuMartId = chibuMartId;
     userTableJSON.StockroomCartTable = stockroomCartTable;
     userTableJSON.ProductWishListTable = productWishListTable;
@@ -144,7 +142,7 @@ func StoreRegistrationData(registrationRequest model.RegistrationRequest) int {
     theTime := timeNow.Unix();               
     firstSalt := emailAddress[0 : 5];                   
     thePassword := string(firstSalt) + string(password) + fmt.Sprintf("%d", theTime);             
-
+ 
     passwordHash, error := bcrypt.GenerateFromPassword([]byte(thePassword), bcrypt.DefaultCost);                 
 
     utility.Exception(error);
