@@ -5,15 +5,15 @@ import (
 )
 
 type ImageProperties struct {            
-    ImageName string `json:"imageName"`;
-    ImageWidth int `json:"imageWidth"`;
-    ImageHeight int `json:"imageHeight"`;
+    ImageName string;
+    ImageWidth int;
+    ImageHeight int;
 }
 
 type GenericImage struct {               
-    ContentId int `json:"contentId"`;
-    ImageString string `json:"ImageString"`;
-    ImageType string `json:"ImageType"`;
+    ContentId int;
+    ImageString string;
+    ImageType string;
 }
 
 
