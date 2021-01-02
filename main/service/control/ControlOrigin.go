@@ -10,11 +10,11 @@ import (
 	"./utility";
 )
 
-func StoreImageProperties() {
+func StoreImageProperties(imageProperties model.ImageProperties) bool {
     
 }
 
-func StoreGenericImage() {
+func StoreGenericImage(genericImage model.GenericImage) string {
     
 }
 

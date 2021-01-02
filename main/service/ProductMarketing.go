@@ -28,12 +28,29 @@ func AddNewProduct(context *gin.Context) {
     context.Bind(&addProductRequest);
     
     if addProductRequest.EmailAddress == sessionEmailAddress {
-        StoreProductComposite
-        StoreGenericImage
-        StoreImageProperties
+        productId := control.StoreProductComposite(addProductRequest);
         
-        addProductResponse.Success = false;
-        addProductResponse.Message = "Product addition successful!";
+        if productId > 0 {
+            var genericImage model.GenericImage;
+            genericImage.ContentId = productId;  
+            genericImage.ImageString = addProductRequest.ProductImage;
+            genericImage.ImageType = "PRODUCT";
+            
+            productImageName := control.StoreGenericImage(genericImage);
+            
+            var imageProperties model.ImageProperties;
+            imageProperties.ImageName = productImageName;
+            imageProperties.ImageWidth = addProductRequest.ImageWidth;
+            imageProperties.ImageHeight = addProductRequest.ImageHeight;
+            
+            control.StoreImageProperties(imageProperties);
+            
+            addProductResponse.Success = true;
+            addProductResponse.Message = "Product addition successful!";
+        } else {
+            addProductResponse.Success = false;
+            addProductResponse.Message = "Product addition failed!";
+        }
     } else {
         addProductResponse.Success = false;
         addProductResponse.Message = "Product addition failed!";
