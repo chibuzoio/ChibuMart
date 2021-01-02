@@ -7,7 +7,37 @@ import (
 )
  
 func CreateProjectTables() {
-	tableCollection := []string{               
+	tableCollection := []string{         
+		"create table if not exists chibumartimages (" +
+			"image varchar(55) not null, " +
+			"width int(7) unsigned not null, " +
+			"height int(7) unsigned not null, " +
+			"primary key(image) " +
+			") engine = InnoDB default charset = utf8",                   
+
+		"create table if not exists productcollection (" +
+			"productId bigint(20) unsigned not null auto_increment, " +      
+			"productName varchar(111) not null, " +
+			"productCategory varchar(111) not null, " +
+			"productQuantityRemaining bigint(15) unsigned, " +
+			"productQuantityRetailed bigint(15) unsigned, " + // for top selling products, different from trending products              
+			"productQuantityTotal bigint(15) unsigned not null, " +
+			"productPreviousPrice decimal(33, 11) not null, " +
+			"productCurrentPrice decimal(33, 11) not null, " +
+			"placementDate varchar(23) not null, " +
+			"incrementDate varchar(23), " +
+			"retailDate varchar(23), " +
+			"descriptionId bigint(20) unsigned, " +
+			"numberOfComments int(7), " +
+			"numberOfLikes int(7), " +
+			"allReactionsTotal int(9), " + // for trending products, different from top selling products                         
+			"commentTableName varchar(111), " +
+			"likeTableName varchar(111), " +
+			"productLocation varchar(111), " +
+			"primary key(productId), " +    
+			"key(descriptionId) " + 
+			") engine = InnoDB default charset = utf8",                    
+      
 		"create table if not exists chibumart (" +
 			"chibuMartId bigint(20) unsigned not null auto_increment, " + 
 			"firstName varchar(23), " +

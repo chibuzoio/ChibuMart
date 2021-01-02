@@ -14,11 +14,20 @@ import (
 
 func LogoutUser(context *gin.Context) {
     session := sessions.Default(context);
+    
+    emailAddress, ok := session.Get("emailAddress").(string);
+    
+    if ok {
+        utility.Println("The emailAddress in session here is " + emailAddress); 
+    } else {
+        utility.Println("session doesn't exists................................");
+    }
+  
     session.Set("emailAddress", "");
     session.Clear();
     session.Options(sessions.Options{MaxAge: -1});
     session.Save();
-    
+
     var logoutResponse model.LogoutResponse;
     
     logoutResponse.Success = true;
