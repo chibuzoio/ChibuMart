@@ -4,6 +4,19 @@ import (
 
 )
 
+type ImageProperties struct {            
+    ContentId int;        
+    ImageName string;
+    ImageWidth int;
+    ImageHeight int;
+}
+
+type GenericImage struct {               
+    ContentId int;
+    ImageString string;
+    ImageType string;
+}
+
 type UserTable struct {
     ChibuMartId int `json:"chibuMartId"`;
     StockroomCartTable string `json:"stockroomCartTable"`;

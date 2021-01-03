@@ -1,11 +1,12 @@
 package service 
 
-import ( 
+import (  
     "fmt";
     "net/http";     
     
 	"./control";
     "./control/model";  
+    "./control/utility";  
 	
 	"github.com/gin-gonic/gin";    
     "github.com/gin-contrib/sessions";
@@ -33,12 +34,14 @@ func AddNewProduct(context *gin.Context) {
             productImageName := control.StoreGenericImage(genericImage);
             
             var imageProperties model.ImageProperties;
+            imageProperties.ContentId = productId;
             imageProperties.ImageName = productImageName;
             imageProperties.ImageWidth = addProductRequest.ImageWidth;
             imageProperties.ImageHeight = addProductRequest.ImageHeight;
-            
+           
+            control.StoreProductImage(imageProperties);
             control.StoreImageProperties(imageProperties);
-            
+           
             addProductResponse.Success = true;
             addProductResponse.Message = "Product addition successful!";
         } else {
@@ -49,6 +52,8 @@ func AddNewProduct(context *gin.Context) {
         addProductResponse.Success = false;
         addProductResponse.Message = "User not signed in!";
     }
+    
+    utility.Println("Response gotten here is this " + fmt.Sprintf("%v", addProductResponse));
     
     context.JSON(http.StatusOK, addProductResponse);
 }

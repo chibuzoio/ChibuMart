@@ -8,6 +8,26 @@ import (
 	"./utility";
 )
 
+func StoreProductImage(imageProperties model.ImageProperties) {
+    connector := utility.GetConnection();
+    
+    defer connector.Close();
+    
+    query := "insert into productimages (productImageId, productId, productImageName, " +  
+        "commentTableName, likeTableName, numberOfComments, numberOfLikes) values (?, ?, ?, ?, ?, ?, ?)";
+            
+    stmt, error := connector.Prepare(query);
+    
+    utility.Exception(error);
+    
+    _, error = stmt.Exec(0, imageProperties.ContentId, imageProperties.ImageName, "", "", 0, 0);
+    
+    utility.Exception(error);
+    
+    stmt.Close();
+    connector.Close();
+}
+
 func StoreProductComposite(addProductRequest model.AddProductRequest) int {
 	timeNow := time.Now(); 
 	connector := utility.GetConnection();
