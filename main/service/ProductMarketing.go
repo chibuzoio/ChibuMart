@@ -53,7 +53,7 @@ func AddNewProduct(context *gin.Context) {
         }
     } else {
         addProductResponse.Success = false;
-        addProductResponse.Message = "Product addition failed!";
+        addProductResponse.Message = "User not signed in!";
     }
     
     context.JSON(http.StatusOK, addProductResponse);
