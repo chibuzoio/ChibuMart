@@ -1,8 +1,7 @@
 package control
 
 import (
-	"fmt";
-	"log";
+	"fmt"; 
 	"time";
 	"./model";
 	"math/big";
@@ -59,7 +58,7 @@ func StoreProductComposite(addProductRequest model.AddProductRequest) int {
     var productId int;
     query = "select productId from productcollection order by productId desc limit 1";
     
-    rows, error := transaction.query(query);
+    rows, error := transaction.Query(query);
     
     utility.Exception(error);
     

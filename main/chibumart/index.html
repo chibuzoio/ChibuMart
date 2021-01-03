@@ -9,9 +9,18 @@
 	</head>                  
 	<body id="assignment">             
    		<div class="websiteBody">   
-            <input type="text" class="emailAddress" placeholder="Email Address"><br>
+   		
+        <input id="productName" type="text" class="textInput" placeholder="Product Name"/>
+        <input id="productPrice" type="text" class="textInput" placeholder="Product Price"/>                     
+        <input id="emailAddress" type="text" class="textInput" placeholder="Email Address"/>                  
+        <input id="productCategory" type="text" class="textInput" placeholder="Product Category"/>                  
+        <input id="productQuantity" type="text" class="textInput" placeholder="Product Quantity"/>                  
+        <input id="chooseProductPicture" class="fileInput" type="file" accept="image/*"/>
+        <input id="postProductButton" type="submit" value="Post Product" class="signUpButton"/> 
+
+<!--            <input type="text" class="emailAddress" placeholder="Email Address"><br>
             <input type="password" class="password" placeholder="Password"><br>
-            <input type="submit" value="Submit" class="submitUserData">            
+            <input type="submit" value="Submit" class="submitUserData">            -->
    		</div>
 		<script type="text/javascript">
 		/*! jQuery v3.5.1 | (c) JS Foundation and other contributors | jquery.org/license */
@@ -19,6 +28,89 @@
 		</script>           
 		<script type="text/javascript">
             (function($) {               
+				var chibuMart = {};                      
+				chibuMart.imageFile = {};
+				chibuMart.imageWidth = 0;
+				chibuMart.imageHeight = 0;
+				chibuMart.productName = "";
+				chibuMart.productPrice = "";
+				chibuMart.emailAddress = "";
+				chibuMart.image = new Image();
+				chibuMart.productCategory = "";
+				chibuMart.productQuantity = "";
+				chibuMart.imageUrl = window.URL || window.webkitURL;
+
+				$("#postProductButton").click(function() {                                        
+					chibuMart.productName = $.trim($("#productName").val());
+					chibuMart.productPrice = $.trim($("#productPrice").val());
+					chibuMart.emailAddress = $.trim($("#emailAddress").val());
+					chibuMart.productCategory = $.trim($("#productCategory").val());
+					chibuMart.productQuantity = $.trim($("#productQuantity").val());
+       
+                    if (0 in $("#chooseProductPicture").prop("files")) {
+                        chibuMart.imageFile = $("#chooseProductPicture").prop("files")[0];
+
+                        chibuMart.image.src = chibuMart.imageUrl.createObjectURL(chibuMart.imageFile);
+
+                        console.log("image file values here are " + JSON.stringify(chibuMart.imageFile));
+                        
+                        chibuMart.image.onload = function() {
+                            chibuMart.imageWidth = this.width;
+                            chibuMart.imageHeight = this.height;
+                        }
+                        
+                        /*
+                        var theFormData = new FormData();                                    
+                        theFormData.append("imageString", chibuMart.imageFile);
+                        theFormData.append("imageWidth", chibuMart.imageWidth);
+                        theFormData.append("imageHeight", chibuMart.imageHeight);
+                        theFormData.append("productQuantity", chibuMart.productQuantity);
+                        theFormData.append("productCategory", chibuMart.productCategory);
+                        theFormData.append("productName", chibuMart.productName);
+                        theFormData.append("productPrice", chibuMart.productPrice);
+                        theFormData.append("emailAddress", chibuMart.emailAddress); 
+                        */
+
+                        var testData = JSON.stringify({
+                            productPrice : chibuMart.productPrice,
+                            productCategory : chibuMart.productCategory,
+                            productImage : chibuMart.imageFile,
+                            productName : chibuMart.productName,
+                            imageWidth : chibuMart.imageWidth,
+                            imageHeight : chibuMart.imageHeight,
+                            productQuantity : chibuMart.productQuantity,
+                            emailAddress : chibuMart.emailAddress
+                        });
+
+                        console.log("The value of the testData here is " + testData);
+                            
+                        $.ajax({                                       
+                            type : "POST",                                           
+// 								url : "addnewproduct",
+                            data : JSON.stringify({
+                                productPrice : chibuMart.productPrice,
+                                productCategory : chibuMart.productCategory,
+                                productImage : chibuMart.imageFile,
+                                productName : chibuMart.productName,
+                                imageWidth : chibuMart.imageWidth,
+                                imageHeight : chibuMart.imageHeight,
+                                productQuantity : chibuMart.productQuantity,
+                                emailAddress : chibuMart.emailAddress
+                            }),
+                            processData : false,                                    
+                            contentType : false                                              
+                        }).done(function(theResponse) {                                             
+                            $("#chooseProductPicture").val("");                                     
+                            chibuMart.imageFile = {};                             
+                            profileImageSelected = true;                                               
+                            location.reload(true);                                                    
+                        });                                              
+                    } else {                                                
+                        chibuMart.imageFile = {};                                                 
+                        profileImageSelected = false;                                                      
+                    } 
+				});             
+
                 $(".submitUserData").click(function() {  
                     var localPassword = $(".password").val();
                     var localEmail = $(".emailAddress").val();

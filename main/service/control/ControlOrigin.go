@@ -1,13 +1,10 @@
 package control
 
-import (
-	"os";
+import ( 
 	"fmt";
-	"time";
-	"strings";
-	"./model";
-	"math/big";
-	"./utility";
+	"time"; 
+	"./model";     
+	"./utility";    
 )
 
 func StoreImageProperties(imageProperties model.ImageProperties) bool {

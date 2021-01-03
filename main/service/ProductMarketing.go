@@ -1,22 +1,15 @@
 package service 
 
-import (
-    "strings";
+import ( 
     "net/http";     
     
 	"./control";
-    "./control/model";
-    "./control/utility";
+    "./control/model"; 
 	
 	"github.com/gin-gonic/gin";    
     "github.com/gin-contrib/sessions";
 )    
-
-
-IncrementProduct
-DecrementProduct
-RemoveProduct
-
+               
 func AddNewProduct(context *gin.Context) {
     var addProductRequest model.AddProductRequest;
     var addProductResponse model.AddProductResponse;
