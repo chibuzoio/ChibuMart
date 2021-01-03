@@ -8,6 +8,17 @@ import (
  
 func CreateProjectTables() {
 	tableCollection := []string{         
+		"create table if not exists productimages (" +
+			"productImageId bigint(20) unsigned not null auto_increment, " +   
+			"productId bigint(20) unsigned not null, " +
+			"productImageName varchar(55), " +
+			"commentTableName varchar(111), " +
+			"likeTableName varchar(111), " +
+			"numberOfComments int(7), " +
+			"numberOfLikes int(7), " +
+			"primary key(productImageId) " + 
+			") engine = InnoDB default charset = utf8", 
+
 		"create table if not exists chibumartimages (" +
 			"image varchar(55) not null, " +
 			"width int(7) unsigned not null, " +

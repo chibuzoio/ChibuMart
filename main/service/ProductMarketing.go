@@ -1,10 +1,11 @@
 package service 
 
 import ( 
+    "fmt";
     "net/http";     
     
 	"./control";
-    "./control/model"; 
+    "./control/model";  
 	
 	"github.com/gin-gonic/gin";    
     "github.com/gin-contrib/sessions";
@@ -19,7 +20,7 @@ func AddNewProduct(context *gin.Context) {
     sessionEmailAddress, _ := session.Get("emailAddress").(string);
 
     context.Bind(&addProductRequest);
-    
+          
     if addProductRequest.EmailAddress == sessionEmailAddress {
         productId := control.StoreProductComposite(addProductRequest);
         
