@@ -17,11 +17,14 @@ func main() {
 	
     router.Use(sessions.Sessions("ChibuMart", store));
     
+	router.Static("/js", "./chibumart/js");
 	router.GET("/install", service.Install);    
+	router.Static("/css", "./chibumart/css");
     router.POST("/login", service.LoginUser);
 	router.GET("/logout", service.LogoutUser);    
+	router.Static("/image", "./chibumart/image");
     router.POST("/register", service.RegisterUser);
-	router.StaticFile("/", "chibumart/index.html");
+	router.StaticFile("/", "./chibumart/index.html");
 	router.POST("/postuserdata", service.PostUserData);                           
     router.GET("/fetchuserdata", service.FetchUserData);
     router.POST("/addnewproduct", service.AddNewProduct);

@@ -35,6 +35,8 @@ func GetUserLoginData(emailAddress string) model.LoginData {
             &loginData.RegDate, &loginData.ProfilePicture, &loginData.BillingAddressId);
         
         utility.Exception(error);
+        
+        loginData.EmailAddress = emailAddress;
     }
     
     resultSet.Close();
