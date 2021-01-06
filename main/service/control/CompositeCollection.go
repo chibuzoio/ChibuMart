@@ -10,13 +10,7 @@ func FetchProducts() []model.FetchProductData {
     
     var fetchProductData model.FetchProductData;
     var fetchProductDataArray []model.FetchProductData;
-    
-    var productImageWidth, productImageHeight int;
-    var descriptionId, numberOfComments, numberOfLikes, allReactionsTotal, productImageId int;
-    var productId, productQuantityRemaining, productQuantityRetailed, productQuantityTotal int; 
-    var productName, productCategory, productPreviousPrice, productCurrentPrice, placementDate string;     
-    var incrementDate, retailDate, commentTableName, likeTableName, productLocation, productImageName string;
-    
+                       
     defer connector.Close();
     
     query := "select productId, productName, productCategory, productQuantityRemaining, " + 
@@ -29,49 +23,30 @@ func FetchProducts() []model.FetchProductData {
     utility.Exception(error);
     
     for rows.Next() {
-        error = rows.Scan(&productId, &productName, &productCategory, &productQuantityRemaining, 
-            &productQuantityRetailed, &productQuantityTotal, &productPreviousPrice, &productCurrentPrice, 
-            &placementDate, &incrementDate, &retailDate, &descriptionId, &numberOfComments, &numberOfLikes,  
-            &allReactionsTotal, &commentTableName, &likeTableName, &productLocation);
+        error = rows.Scan(&fetchProductData.ProductId, &fetchProductData.ProductName, 
+            &fetchProductData.ProductCategory, &fetchProductData.ProductQuantityRemaining, 
+            &fetchProductData.ProductQuantityRetailed, &fetchProductData.ProductQuantityTotal, 
+            &fetchProductData.ProductPreviousPrice, &fetchProductData.ProductCurrentPrice, &fetchProductData.PlacementDate, 
+            &fetchProductData.IncrementDate, &fetchProductData.RetailDate, &fetchProductData.DescriptionId, 
+            &fetchProductData.NumberOfComments, &fetchProductData.NumberOfLikes, &fetchProductData.AllReactionsTotal, 
+            &fetchProductData.CommentTableName, &fetchProductData.LikeTableName, &fetchProductData.ProductLocation);
         
         utility.Exception(error);
-        
-        fetchProductData.ProductId = productId;
-        fetchProductData.ProductName = productName;
-        fetchProductData.ProductCategory = productCategory;
-        fetchProductData.ProductQuantityRemaining = productQuantityRemaining;
-        fetchProductData.ProductQuantityRetailed = productQuantityRetailed;
-        fetchProductData.ProductQuantityTotal = productQuantityTotal;
-        fetchProductData.ProductPreviousPrice = productPreviousPrice;
-        fetchProductData.ProductCurrentPrice = productCurrentPrice;
-        fetchProductData.PlacementDate = placementDate;
-        fetchProductData.IncrementDate = incrementDate;
-        fetchProductData.RetailDate = retailDate;
-        fetchProductData.DescriptionId = descriptionId;
-        fetchProductData.NumberOfComments = numberOfComments;
-        fetchProductData.NumberOfLikes = numberOfLikes;
-        fetchProductData.AllReactionsTotal = allReactionsTotal;
-        fetchProductData.CommentTableName = commentTableName;
-        fetchProductData.LikeTableName = likeTableName;
-        fetchProductData.ProductLocation = productLocation;    
-             
+              
         query = "select productImageId, productImageName from productimages where productId = ?";
         
         firstResultSet, error := connector.Prepare(query);
         
         utility.Exception(error);
         
-        firstRows, error := firstResultSet.Query(productId);
+        firstRows, error := firstResultSet.Query(fetchProductData.ProductId);
         
         utility.Exception(error);
         
         for firstRows.Next() {
-            error = firstRows.Scan(&productImageId, &productImageName);
+            error = firstRows.Scan(&fetchProductData.ProductImageId, &fetchProductData.ProductImageName);
             
             utility.Exception(error);
-
-            fetchProductData.ProductImageId = productImageId;
-            fetchProductData.ProductImageName = productImageName;
   
             query = "select width, height from chibumartimages where image = ?";
             
@@ -79,17 +54,14 @@ func FetchProducts() []model.FetchProductData {
             
             utility.Exception(error);
             
-            secondRows, error := secondResultSet.Query(productImageName);
+            secondRows, error := secondResultSet.Query(fetchProductData.ProductImageName);
             
             utility.Exception(error);
             
             for secondRows.Next() {
-                error = secondRows.Scan(&productImageWidth, &productImageHeight);
+                error = secondRows.Scan(&fetchProductData.ProductImageWidth, &fetchProductData.ProductImageHeight);
                 
-                utility.Exception(error);
-                
-                fetchProductData.ProductImageWidth = productImageWidth;
-                fetchProductData.ProductImageHeight = productImageHeight;
+                utility.Exception(error);                       
             }
             
             secondResultSet.Close();

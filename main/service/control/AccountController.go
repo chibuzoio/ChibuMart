@@ -18,7 +18,7 @@ func GetUserLoginData(emailAddress string) model.LoginData {
     defer connector.Close();
        
     query := "select chibuMartId, firstName, lastName, gender, phoneNumber, town, " + 
-        "state, country, password, regDate, profilePicture, billingAddressId from " +  
+        "state, country, regDate, profilePicture, billingAddressId from " +  
         "chibumart where emailAddress = ?";        
     
     resultSet, error := connector.Prepare(query);
@@ -31,9 +31,8 @@ func GetUserLoginData(emailAddress string) model.LoginData {
     
     for rows.Next() {
         error = rows.Scan(&loginData.ChibuMartId, &loginData.FirstName, &loginData.LastName, 
-            &loginData.Gender, &loginData.EmailAddress, &loginData.PhoneNumber, &loginData.Town,  
-            &loginData.State, &loginData.Country, &loginData.RegDate, &loginData.ProfilePicture, 
-            &loginData.BillingAddressId);
+            &loginData.Gender, &loginData.PhoneNumber, &loginData.Town, &loginData.State, &loginData.Country, 
+            &loginData.RegDate, &loginData.ProfilePicture, &loginData.BillingAddressId);
         
         utility.Exception(error);
     }
