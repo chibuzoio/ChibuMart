@@ -16,6 +16,7 @@
         <input id="productCategory" type="text" class="textInput" placeholder="Product Category"/>                  
         <input id="productQuantity" type="text" class="textInput" placeholder="Product Quantity"/>                  
         <input id="chooseProductPicture" class="fileInput" type="file" accept="image/*"/>-->
+        <input type="submit" value="Fetch Products" class="fetchProductButton"/> 
         <input type="submit" value="Post Product" class="postProductButton"/> 
 
 <!--        <input type="text" class="emailAddress" placeholder="Email Address"><br>
@@ -39,6 +40,25 @@
 // 				chibuMart.productQuantity = 0;
 // 				chibuMart.productCategory = "";
 // 				chibuMart.imageUrl = window.URL || window.webkitURL;
+
+				$(".fetchProductButton").click(function() {      
+					var emailAddress = "onyeokorochibuzo@gmail.com";
+					        
+                    $.ajax({                                       
+                        type : "POST",                                           
+                        url : "fetchproducts",
+                        data : JSON.stringify({ 
+                            emailAddress : emailAddress
+                        }),
+                        processData : false,                 
+                        contentType : "application/json"     
+                    }).done(function(theResponse) {                                             
+                        console.log("The response here is " + JSON.stringify(theResponse));
+                    }).fail(function(xhr, status, error) {
+                        var errorMessage = xhr.status + ": " + xhr.statusText;
+                        console.log("Error = " + errorMessage + " the error here is " + error);
+                    });        
+				});             
 
 				$(".postProductButton").click(function() {                                       
                     var imageWidth = 0;

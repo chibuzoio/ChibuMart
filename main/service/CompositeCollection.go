@@ -1,7 +1,7 @@
 package service
 
-import (
-    "strings";
+import ( 
+    "fmt";
     "net/http";     
     
 	"./control";
