@@ -4,6 +4,21 @@ import (
     "database/sql";
 )
 
+func CreateProductWishTable(connector *sql.DB, tableName string) {                                                       
+	query := "create table if not exists " + tableName + " (" +
+		"productWishId bigint(15) unsigned not null auto_increment, " +
+		"productId bigint(20) unsigned not null, " +
+		"wishDate varchar(23) not null, " +
+		"primary key(productWishListId) " +
+		") engine = InnoDB default charset = utf8";
+
+	_, error := (*connector).Exec(query);
+
+	Exception(error);
+
+	Println("Successfully Created " + tableName + " Table...");
+}                                                        
+
 func CreateProductCartTable(connector *sql.DB, tableName string) {
 	query := "create table if not exists " + tableName + " (" +
 		"productCartId bigint(20) unsigned not null auto_increment, " +
@@ -17,7 +32,7 @@ func CreateProductCartTable(connector *sql.DB, tableName string) {
 
 	Exception(error);
 
-	Println("Successfully Created", tableName, "Table...");
+	Println("Successfully Created " + tableName + " Table...");
 } 
 
 func CreateAllWatchUserTable(connector *sql.DB, tableName string) {                                             
@@ -180,7 +195,7 @@ func CreateProductDeliveryTable(connector *sql.DB, tableName string) {
 
 	Exception(error);
 
-	Println("Successfully Created", tableName, "Table...");
+	Println("Successfully Created " + tableName + " Table...");
 }
        
 func CreateSalesPerformanceTable(connector *sql.DB, tableName string) {
@@ -201,7 +216,7 @@ func CreateSalesPerformanceTable(connector *sql.DB, tableName string) {
 
 	Exception(error);
 
-	Println("Successfully Created", tableName, "Table...");
+	Println("Successfully Created " + tableName + " Table...");
 }
 
 func CreateAllFollowedStockroomTable(connector *sql.DB, tableName string) {                                             
@@ -216,7 +231,7 @@ func CreateAllFollowedStockroomTable(connector *sql.DB, tableName string) {
 
 	Exception(error);
 
-	Println("Successfully Created", tableName, "Table...");
+	Println("Successfully Created " + tableName + " Table...");
 }                                                                 
 
 func CreateStockroomSubscriberTable(connector *sql.DB, tableName string) {
@@ -234,7 +249,7 @@ func CreateStockroomSubscriberTable(connector *sql.DB, tableName string) {
 
 	Exception(error);
 
-	Println("Successfully Created", tableName, "Table...");
+	Println("Successfully Created " + tableName + " Table...");
 }
 
 func CreateAllTheWatchTable(connector *sql.DB, tableName string) {                                             
@@ -251,7 +266,7 @@ func CreateAllTheWatchTable(connector *sql.DB, tableName string) {
 
 	Exception(error);
 
-	Println("Successfully Created", tableName, "Table...");
+	Println("Successfully Created " + tableName + " Table...");
 }                                                                 
 
 func CreateGenericLikeTable(connector *sql.DB, tableName string) {                                             
@@ -286,7 +301,7 @@ func CreateReplyTable(connector *sql.DB, tableName string) {
 
 	Exception(error);
 
-	Println("Successfully Created", tableName, "Table...");
+	Println("Successfully Created " + tableName + " Table...");
 }                                                        
 
 func CreateCommentTable(connector *sql.DB, tableName string) {                                                       
@@ -324,22 +339,7 @@ func CreateRequirementTable(connector *sql.DB, tableName string) {
 
 	Exception(error);
 
-	Println("Successfully Created", tableName, "Table...");
-}                                                        
-
-func CreateProductWishListTable(connector *sql.DB, tableName string) {                                                       
-	query := "create table if not exists " + tableName + " (" +
-		"productWishId bigint(15) unsigned not null auto_increment, " +
-		"productId bigint(20) unsigned not null, " +
-		"wishDate varchar(23) not null, " +
-		"primary key(productWishListId) " +
-		") engine = InnoDB default charset = utf8";
-
-	_, error := (*connector).Exec(query);
-
-	Exception(error);
-
-	Println("Successfully Created", tableName, "Table...");
+	Println("Successfully Created " + tableName + " Table...");
 }                                                        
 
 func CreateExhibitArchiveTable(connector *sql.DB, tableName string) {                                                       
@@ -356,7 +356,7 @@ func CreateExhibitArchiveTable(connector *sql.DB, tableName string) {
 
 	Exception(error);
 
-	Println("Successfully Created", tableName, "Table...");
+	Println("Successfully Created " + tableName + " Table...");
 }                                                        
 
 func CreateNotificationTable(connector *sql.DB, tableName string) {
@@ -381,7 +381,7 @@ func CreateNotificationTable(connector *sql.DB, tableName string) {
 
 	Exception(error);
 
-	Println("Successfully Created", tableName, "Table...");
+	Println("Successfully Created " + tableName + " Table...");
 }
 
 func CreateWatchersTable(connector *sql.DB, tableName string) {
@@ -399,7 +399,7 @@ func CreateWatchersTable(connector *sql.DB, tableName string) {
 
 	Exception(error);
 
-	Println("Successfully Created", tableName, "Table...");
+	Println("Successfully Created " + tableName + " Table...");
 }
 
 

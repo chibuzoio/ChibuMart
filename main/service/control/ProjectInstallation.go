@@ -79,7 +79,7 @@ func CreateProjectTables() {
 			"chibuMartId bigint(20) unsigned not null, " +          
 			"notificationTableName varchar(111) not null, " +
 			"productReceptionTable varchar(111) not null, " +
-			"productWishListTable varchar(111) not null, " +
+			"productWishTable varchar(111) not null, " +
 			"productCartTable varchar(111) not null, " +
 			"primary key(userTableId), " +           
 			"unique key(chibuMartId) " +          

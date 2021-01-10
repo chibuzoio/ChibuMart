@@ -9,11 +9,62 @@ import (
 )
 
 func AddWishedProduct(addWishedProduct model.AddWishedProduct) bool {
+	timeNow := time.Now(); 
+	connector := utility.GetConnection();
+	currentUnixTime := fmt.Sprintf("%d", timeNow.Unix()); 
+    
+    defer connector.Close();
+ 
+    query := "insert into " + addWishedProduct.ProductWishTable + 
+        " (productWishId, productId, wishDate) values (?, ?, ?)";
+    
+    stmt, error := connector.Prepare(query);
+    
+	if utility.EvaluateTable(addWishedProduct.ProductWishTable, error) {
+		utility.CreateProductWishTable(connector, addWishedProduct.ProductWishTable);
+		
+		stmt, error = connector.Prepare(query);
+
+		utility.Exception(error);
+	}
+
+    _, error = stmt.Exec(0, addWishedProduct.ProductId, currentUnixTime);
+    
+    utility.Exception(error);
+    
+    stmt.Close();
+    connector.Close();
+    
+    return true;
+}
+
+func GetProductWishTable(chibuMartId int) string {
     connector := utility.GetConnection();
     
     defer connector.Close();
     
-    query := "insert into ";
+    var productWishTable string;
+    query := "select productWishTable from usertable where chibuMartId = ?";
+    
+    resultSet, error := connector.Prepare(query);
+    
+    utility.Exception(error);
+    
+    rows, error := resultSet.Query(chibuMartId);
+    
+    utility.Exception(error);
+    
+    for rows.Next() {
+        error = rows.Scan(&productWishTable);
+        
+        utility.Exception(error);
+    }
+    
+    resultSet.Close();
+    rows.Close();
+    connector.Close();
+    
+    return productWishTable;
 }
 
 func GetProductCartTable(chibuMartId int) string {
@@ -24,7 +75,7 @@ func GetProductCartTable(chibuMartId int) string {
     var productCartTable string;
     query := "select productCartTable from usertable where chibuMartId = ?";
     
-    resultSet, error := connector.Prepare();
+    resultSet, error := connector.Prepare(query);
     
     utility.Exception(error);
     

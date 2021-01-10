@@ -1,18 +1,17 @@
 package service 
 
-import (  
-    "fmt";
+import (   
     "net/http";     
     
 	"./control";
-    "./control/model";  
-    "./control/utility";  
+    "./control/model";   
 	
 	"github.com/gin-gonic/gin";    
     "github.com/gin-contrib/sessions";
 )    
                
 func AddWishedProduct(context *gin.Context) {
+    var addWishedProduct model.AddWishedProduct;
     var wishProductRequest model.WishProductRequest;
     var wishProductResponse model.WishProductResponse;
     
@@ -24,10 +23,12 @@ func AddWishedProduct(context *gin.Context) {
         
     if wishProductRequest.EmailAddress == sessionEmailAddress {
         chibuMartId := control.GetChibuMartId(wishProductRequest.EmailAddress);
-        productCartTable := control.GetProductCartTable(chibuMartId);
-        
-    
-        committed := control.AddWishedProduct(wishProductRequest);
+        productWishTable := control.GetProductWishTable(chibuMartId);
+                
+        addWishedProduct.ProductWishTable = productWishTable;
+        addWishedProduct.ProductId = wishProductRequest.ProductId;
+                    
+        committed := control.AddWishedProduct(addWishedProduct);
         
         if committed {
             wishProductResponse.Success = true;
@@ -39,7 +40,9 @@ func AddWishedProduct(context *gin.Context) {
     } else {
         wishProductResponse.Success = false;
         wishProductResponse.Message = "User not signed in!";
-    }   
+    }
+    
+    context.JSON(http.StatusOK, wishProductResponse);
 }
 
 func AddNewProduct(context *gin.Context) {

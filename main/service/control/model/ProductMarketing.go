@@ -6,7 +6,7 @@ import (
 
 type AddWishedProduct struct {
     ProductId int;
-    ProductCartTable string;
+    ProductWishTable string;
 }
 
 type WishProductResponse struct {
