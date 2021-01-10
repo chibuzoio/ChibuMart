@@ -26,9 +26,9 @@ func main() {
     router.POST("/register", service.RegisterUser);
 	router.StaticFile("/", "./chibumart/index.html");
 	router.POST("/postuserdata", service.PostUserData);                           
+    router.GET("/fetchproducts", service.FetchProducts);
     router.GET("/fetchuserdata", service.FetchUserData);
     router.POST("/addnewproduct", service.AddNewProduct);
-    router.POST("/fetchproducts", service.FetchProducts);
     router.Run();                 
 }                       
 

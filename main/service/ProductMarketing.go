@@ -12,6 +12,36 @@ import (
     "github.com/gin-contrib/sessions";
 )    
                
+func AddWishedProduct(context *gin.Context) {
+    var wishProductRequest model.WishProductRequest;
+    var wishProductResponse model.WishProductResponse;
+    
+    session := sessions.Default(context);
+    
+    sessionEmailAddress, _ := session.Get("emailAddress").(string);
+
+    context.Bind(&wishProductRequest);
+        
+    if wishProductRequest.EmailAddress == sessionEmailAddress {
+        chibuMartId := control.GetChibuMartId(wishProductRequest.EmailAddress);
+        productCartTable := control.GetProductCartTable(chibuMartId);
+        
+    
+        committed := control.AddWishedProduct(wishProductRequest);
+        
+        if committed {
+            wishProductResponse.Success = true;
+            wishProductResponse.Message = "Product wish successful!";
+        } else {
+            wishProductResponse.Success = false;
+            wishProductResponse.Message = "Product wish failed!";   
+        }
+    } else {
+        wishProductResponse.Success = false;
+        wishProductResponse.Message = "User not signed in!";
+    }   
+}
+
 func AddNewProduct(context *gin.Context) {
     var addProductRequest model.AddProductRequest;
     var addProductResponse model.AddProductResponse;
@@ -52,9 +82,7 @@ func AddNewProduct(context *gin.Context) {
         addProductResponse.Success = false;
         addProductResponse.Message = "User not signed in!";
     }
-    
-    utility.Println("Response gotten here is this " + fmt.Sprintf("%v", addProductResponse));
-    
+     
     context.JSON(http.StatusOK, addProductResponse);
 }
 

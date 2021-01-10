@@ -7,6 +7,35 @@ import (
 	"./utility";    
 )
 
+func GetChibuMartId(emailAddress string) int {
+	connector := utility.GetConnection(); 
+
+	defer connector.Close();
+
+    var chibuMartId int;
+    query := "select chibuMartId from chibumart where emailAddress = ?";
+    
+    resultSet, error := connector.Prepare(query);
+    
+    utility.Exception(error);
+    
+    rows, error := resultSet.Query(emailAddress);
+    
+    utility.Exception(error);
+    
+    for rows.Next() {
+        error = rows.Scan(&chibuMartId);
+        
+        utility.Exception(error);
+    }
+    
+    resultSet.Close();
+    rows.Close();
+    connector.Close();
+    
+    return chibuMartId;
+}
+
 func StoreImageProperties(imageProperties model.ImageProperties) bool {
     var committed bool;
 	connector := utility.GetConnection(); 

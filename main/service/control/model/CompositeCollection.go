@@ -34,9 +34,5 @@ type FetchProductResponse struct {
     Message string `json:"message"`;
     Data []FetchProductData `json:"data"`;
 }
-
-type FetchProductRequest struct {
-    EmailAddress string `json:"emailAddress" binding:"required"`;   
-}
-
+   
 

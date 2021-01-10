@@ -8,6 +8,43 @@ import (
 	"./utility";
 )
 
+func AddWishedProduct(addWishedProduct model.AddWishedProduct) bool {
+    connector := utility.GetConnection();
+    
+    defer connector.Close();
+    
+    query := "insert into ";
+}
+
+func GetProductCartTable(chibuMartId int) string {
+    connector := utility.GetConnection();
+    
+    defer connector.Close();
+    
+    var productCartTable string;
+    query := "select productCartTable from usertable where chibuMartId = ?";
+    
+    resultSet, error := connector.Prepare();
+    
+    utility.Exception(error);
+    
+    rows, error := resultSet.Query(chibuMartId);
+    
+    utility.Exception(error);
+    
+    for rows.Next() {
+        error = rows.Scan(&productCartTable);
+        
+        utility.Exception(error);
+    }
+    
+    resultSet.Close();
+    rows.Close();
+    connector.Close();
+    
+    return productCartTable;
+}
+
 func StoreProductImage(imageProperties model.ImageProperties) {
     connector := utility.GetConnection();
     
