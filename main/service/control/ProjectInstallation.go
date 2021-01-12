@@ -8,12 +8,16 @@ import (
  
 func CreateProjectTables() {
 	tableCollection := []string{         
-		"create table if not exists cartmanagementtable (" +
+		"create table if not exists chibumartcart (" +
 			"cartTableId bigint(20) unsigned not null auto_increment, " +   
-			"userTableId bigint(20) unsigned not null, " +    
-			"primary key(cartTableId) " + 
+			"chibuMartId bigint(20) unsigned not null, " +    
+			"productId bigint(20) unsigned not null, " +    
+            "productQuantity int(9) not null, " +      
+			"timeout varchar(23) not null, " + 
+			"primary key(cartTableId), " + 
+			"unique key(productId) " +
 			") engine = InnoDB default charset = utf8", 
-
+   
 		"create table if not exists productimages (" +
 			"productImageId bigint(20) unsigned not null auto_increment, " +   
 			"productId bigint(20) unsigned not null, " +
@@ -79,8 +83,7 @@ func CreateProjectTables() {
 			"chibuMartId bigint(20) unsigned not null, " +          
 			"notificationTableName varchar(111) not null, " +
 			"productReceptionTable varchar(111) not null, " +
-			"productWishTable varchar(111) not null, " +
-			"productCartTable varchar(111) not null, " +
+			"productWishTable varchar(111) not null, " +     
 			"primary key(userTableId), " +           
 			"unique key(chibuMartId) " +          
 			") engine = InnoDB default charset = utf8",              

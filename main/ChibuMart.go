@@ -10,6 +10,8 @@ import (
 )
       
 func main() {
+    go service.ExecuteCronJob();
+    
     gin.SetMode(gin.ReleaseMode);
     
 	router := gin.Default();
@@ -30,6 +32,7 @@ func main() {
     router.GET("/fetchuserdata", service.FetchUserData);
     router.POST("/addnewproduct", service.AddNewProduct);
     router.POST("/wishproduct", service.AddWishedProduct);
+    router.POST("/addcartproduct", service.AddCartProduct);
     router.Run();                 
 }                       
 

@@ -4,6 +4,16 @@ import (
     
 )
 
+type CartProductResponse struct {
+    Success bool `json:"success"`;
+    Message string `json:"message"`;
+}
+
+type CartProductRequest struct {
+    ProductId int `json:"productId" binding:"required"`;   
+    EmailAddress string `json:"emailAddress" binding:"required"`;   
+}
+
 type AddWishedProduct struct {
     ProductId int;
     ProductWishTable string;

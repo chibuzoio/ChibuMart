@@ -3,9 +3,62 @@ package control
 import ( 
 	"fmt";
 	"time"; 
+    "strconv";
 	"./model";     
 	"./utility";    
 )
+
+func CheckGenericCartTable() {
+	connector := utility.GetConnection(); 
+
+	defer connector.Close();
+
+    var dueCartTableIdArray []int;
+    
+    currentUnixTime := time.Now().Unix();
+    
+    query := "select cartTableId, timeout from chibumartcart";
+    
+    rows, error := connector.Query(query);
+    
+    utility.Exception(error);
+    
+    for rows.Next() {
+        var timeout string;   
+        var cartTableId int;
+        
+        error = rows.Scan(&cartTableId, &timeout);
+        
+        utility.Exception(error);
+        
+        integerTimeout, error := strconv.ParseInt(timeout, 10, 64);
+        
+        utility.Exception(error);
+        
+        timeDifference := currentUnixTime - integerTimeout;
+        
+        if timeDifference > 0 {
+            dueCartTableIdArray = append(dueCartTableIdArray, cartTableId);
+        }
+    }
+    
+    rows.Close();
+           
+    query = "delete from chibumartcart where cartTableId = ?";
+    
+    stmt, error := connector.Prepare(query);
+    
+    utility.Exception(error);
+    
+    for _, value := range dueCartTableIdArray {
+        _, error = stmt.Exec(dueCartTableIdArray[value]);
+        
+        utility.Exception(error);
+    }
+    
+    stmt.Close();
+    connector.Close();
+}
 
 func GetChibuMartId(emailAddress string) int {
 	connector := utility.GetConnection(); 

@@ -19,7 +19,6 @@ type GenericImage struct {
 
 type UserTable struct {
     ChibuMartId int `json:"chibuMartId"`;
-    ProductCartTable string `json:"productCartTable"`;
     ProductWishTable string `json:"productWishTable"`;
     NotificationTableName string `json:"notificationTableName"`;
     ProductReceptionTable string `json:"productReceptionTable"`;

@@ -91,14 +91,14 @@ func StoreGeneratedTableNames(userTableJSON model.UserTable) {
 	defer connector.Close();  
 	 
     query := "insert into usertable (userTableId, chibuMartId, notificationTableName, " +  
-        "productReceptionTable, productWishTable, productCartTable) values (?, ?, ?, ?, ?, ?)";
+        "productReceptionTable, productWishTable) values (?, ?, ?, ?, ?)";
 	
 	stmt, error := connector.Prepare(query);
 	
 	utility.Exception(error);
 	
 	_, error = stmt.Exec(0, userTableJSON.ChibuMartId, userTableJSON.NotificationTableName, 
-        userTableJSON.ProductReceptionTable, userTableJSON.ProductWishTable, userTableJSON.ProductCartTable);
+        userTableJSON.ProductReceptionTable, userTableJSON.ProductWishTable);
 	
 	utility.Exception(error);
 	
@@ -112,13 +112,11 @@ func GenerateTableNames(chibuMartId int) model.UserTable {
 	chibuMartIdPart := fmt.Sprintf("%05d", chibuMartId);
 	currentUnixTime := fmt.Sprintf("%d", timeNow.Unix());
 	chibuMartIdPart = chibuMartIdPart[len(chibuMartIdPart) - 5 : len(chibuMartIdPart)];      
-    productCartTable := "cart" + currentUnixTime + chibuMartIdPart; 
     productWishTable := "productwish" + currentUnixTime + chibuMartIdPart;
     notificationTableName := "notification" + currentUnixTime + chibuMartIdPart; 
     productReceptionTable := "productreception" + currentUnixTime + chibuMartIdPart; 
          
     userTableJSON.ChibuMartId = chibuMartId;
-    userTableJSON.ProductCartTable = productCartTable;
     userTableJSON.ProductWishTable = productWishTable;
     userTableJSON.NotificationTableName = notificationTableName;
     userTableJSON.ProductReceptionTable = productReceptionTable;

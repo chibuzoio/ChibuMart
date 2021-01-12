@@ -10,6 +10,25 @@ import (
     "github.com/gin-contrib/sessions";
 )    
                
+func AddCartProduct(context *gin.Context) {
+    var cartProductRequest model.CartProductRequest;
+    var cartProductResponse model.CartProductResponse;
+    
+    session := sessions.Default(context);
+    
+    sessionEmailAddress, _ := session.Get("emailAddress").(string);
+
+    context.Bind(&cartProductRequest);
+        
+    if cartProductRequest.EmailAddress == sessionEmailAddress {
+        
+    } else {
+        
+    }
+    
+    context.JSON(http.StatusOK, cartProductResponse);
+}
+
 func AddWishedProduct(context *gin.Context) {
     var addWishedProduct model.AddWishedProduct;
     var wishProductRequest model.WishProductRequest;
