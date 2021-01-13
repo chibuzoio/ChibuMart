@@ -8,6 +8,33 @@ import (
 	"./utility";
 )
 
+func AddCartProduct(cartProductRequest model.CartProductRequest) bool {
+    connector := utility.GetConnection();
+     
+    defer connector.Close();
+                
+    currentUnixTime := time.Now().Unix();
+    timeout := currentUnixTime + 1800;
+    chibuMartId := GetChibuMartId(cartProductRequest.EmailAddress);
+    
+    query := "insert into chibumartcart (cartTableId, chibuMartId, " + 
+        "productId, productQuantity, timeout) values (?, ?, ?, ?, ?)";
+    
+    stmt, error := connector.Prepare(query);
+    
+    utility.Exception(error);
+    
+    _, error = stmt.Exec(0, chibuMartId, cartProductRequest.ProductId, 
+                         cartProductRequest.ProductQuantity, timeout);
+    
+    utility.Exception(error);
+    
+    stmt.Close();
+    connector.Close();
+    
+    return true;
+}
+
 func AddWishedProduct(addWishedProduct model.AddWishedProduct) bool {
 	timeNow := time.Now(); 
 	connector := utility.GetConnection();

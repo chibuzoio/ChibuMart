@@ -8,9 +8,10 @@ type CartProductResponse struct {
     Success bool `json:"success"`;
     Message string `json:"message"`;
 }
-
-type CartProductRequest struct {
+    
+type CartProductRequest struct {  
     ProductId int `json:"productId" binding:"required"`;   
+    ProductQuantity int `json:"productQuantity" binding:"required"`;   
     EmailAddress string `json:"emailAddress" binding:"required"`;   
 }
 

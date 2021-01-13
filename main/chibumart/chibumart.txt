@@ -174,3 +174,5 @@
 2021/01/11 12:15:27 This task will run periodically
 2021/01/11 12:15:28 This task will run periodically
 2021/01/11 12:15:29 This task will run periodically
+2021/01/12 11:36:51 Connection to mysql server gotten successfully
+2021/01/12 11:36:52 Successfully created database.....

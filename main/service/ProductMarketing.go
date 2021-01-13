@@ -20,10 +20,19 @@ func AddCartProduct(context *gin.Context) {
 
     context.Bind(&cartProductRequest);
         
-    if cartProductRequest.EmailAddress == sessionEmailAddress {
+    if cartProductRequest.EmailAddress == sessionEmailAddress {  
+        response := control.AddCartProduct(cartProductRequest);
         
+        if response {
+            cartProductResponse.Success = true;
+            cartProductResponse.Message = "Product added successful!";
+        } else {
+            cartProductResponse.Success = false;
+            cartProductResponse.Message = "Product addition failed!";
+        }
     } else {
-        
+        cartProductResponse.Success = false;
+        cartProductResponse.Message = "Product addition failed!";
     }
     
     context.JSON(http.StatusOK, cartProductResponse);
