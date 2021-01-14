@@ -10,6 +10,37 @@ import (
     "github.com/gin-contrib/sessions";
 )    
                
+func PlaceProductOrder(context *gin.Context) {
+    var placeOrderRequest model.PlaceOrderRequest;
+    var placeOrderResponse model.PlaceOrderResponse;
+    
+    session := sessions.Default(context);
+    
+    sessionEmailAddress, _ := session.Get("emailAddress").(string);
+
+    context.Bind(&placeOrderRequest);
+    
+    if placeOrderRequest.EmailAddress == sessionEmailAddress {
+        committed := control.PlaceProductOrder(placeOrderRequest.EmailAddress);
+        
+        if committed {
+            placeOrderResponse.Success = true;
+            placeOrderResponse.DeliveryStatus = "PENDING";
+            placeOrderResponse.Message = "Product order placement successful!";
+        } else {
+            placeOrderResponse.Success = false;
+            placeOrderResponse.DeliveryStatus = "";
+            placeOrderResponse.Message = "Product order placement failed!";
+        }
+    } else {
+        placeOrderResponse.Success = false;
+        placeOrderResponse.DeliveryStatus = "";
+        placeOrderResponse.Message = "Product order placement failed!";
+    }
+    
+    context.JSON(http.StatusOK, placeOrderResponse);
+}
+
 func AddCartProduct(context *gin.Context) {
     var cartProductRequest model.CartProductRequest;
     var cartProductResponse model.CartProductResponse;
@@ -21,9 +52,9 @@ func AddCartProduct(context *gin.Context) {
     context.Bind(&cartProductRequest);
         
     if cartProductRequest.EmailAddress == sessionEmailAddress {  
-        response := control.AddCartProduct(cartProductRequest);
+        committed := control.AddCartProduct(cartProductRequest);
         
-        if response {
+        if committed {
             cartProductResponse.Success = true;
             cartProductResponse.Message = "Product added successful!";
         } else {

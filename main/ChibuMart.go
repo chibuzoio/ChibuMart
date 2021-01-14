@@ -32,6 +32,7 @@ func main() {
     router.GET("/fetchuserdata", service.FetchUserData);
     router.POST("/addnewproduct", service.AddNewProduct);
     router.POST("/wishproduct", service.AddWishedProduct);
+    router.POST("/placeorder", service.PlaceProductOrder);
     router.POST("/addcartproduct", service.AddCartProduct);
     router.Run();                 
 }                       

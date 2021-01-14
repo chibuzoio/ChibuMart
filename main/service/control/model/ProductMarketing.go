@@ -4,6 +4,22 @@ import (
     
 )
 
+type PlaceProductOrder struct {
+    ProductId int;
+    CartTableId int;
+    ProductQuantity int;
+}
+
+type PlaceOrderResponse struct {
+    Success bool `json:"success"`;
+    Message string `json:"message"`;
+    DeliveryStatus string `json:"deliveryStatus"`;
+}
+    
+type PlaceOrderRequest struct {   
+    EmailAddress string `json:"emailAddress" binding:"required"`;   
+}
+
 type CartProductResponse struct {
     Success bool `json:"success"`;
     Message string `json:"message"`;

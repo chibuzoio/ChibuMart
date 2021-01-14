@@ -4,6 +4,31 @@ import (
 
 )
 
+func DeleteCartProductArray(cartTableIdArray []int) {
+    for _, value := range cartTableIdArray {
+        DeleteCartProduct(value);
+    }
+}
+
+func DeleteCartProduct(cartTableId int) {
+    connector := GetConnection(); 
+    
+    defer connector.Close();
+    
+    query := "delete from chibumartcart where cartTableId = ?";
+    
+    stmt, error := connector.Prepare(query);
+    
+    Exception(error);
+    
+    _, error = stmt.Exec(cartTableId);
+    
+    Exception(error);
+    
+    stmt.Close();
+    connector.Close();
+}
+
 func DoesEmailExists(emailAddress string) bool {
     connector := GetConnection(); 
     

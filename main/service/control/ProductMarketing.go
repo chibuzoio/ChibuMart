@@ -8,6 +8,70 @@ import (
 	"./utility";
 )
 
+func PlaceProductOrder(emailAddress string) bool {
+    var cartTableIdArray []int;
+    var placeProductOrderArray []model.PlaceProductOrder;
+    
+    connector := utility.GetConnection();
+	currentUnixTime := fmt.Sprintf("%d", time.Now().Unix()); 
+     
+    defer connector.Close();
+                
+    chibuMartId := GetChibuMartId(emailAddress);
+
+    query := "select cartTableId, productId, productQuantity " +  
+        "from chibumartcart where chibuMartId = ?";
+    
+    resultSet, error := connector.Prepare(query);
+    
+    utility.Exception(error);
+    
+    rows, error := resultSet.Query(chibuMartId);
+    
+    utility.Exception(error);
+    
+    for rows.Next() {
+        var placeProductOrder model.PlaceProductOrder;
+        
+        error = rows.Scan(&placeProductOrder.CartTableId, 
+                          &placeProductOrder.ProductId, 
+                          &placeProductOrder.ProductQuantity);
+        
+        utility.Exception(error);
+        
+        cartTableIdArray = append(cartTableIdArray, placeProductOrder.CartTableId);
+        placeProductOrderArray = append(placeProductOrderArray, placeProductOrder);
+    }
+
+    resultSet.Close();
+    rows.Close();
+            
+    if len(cartTableIdArray) > 0 {
+        query = "insert into productdeliverytable (productDeliveryId, productId, " + 
+            "chibuMartId, productQuantity, deliveryStatus, deliveryDate) values (?, ?, ?, ?, ?, ?)";
+        
+        stmt, error := connector.Prepare(query);
+        
+        utility.Exception(error);
+        
+        // PENDING, DELIVERING, DELIVERED AND CANCELED     
+        for _, value := range placeProductOrderArray {
+            _, error = stmt.Exec(0, value.ProductId, chibuMartId, 
+                                 value.ProductQuantity, "PENDING", currentUnixTime);
+        
+            utility.Exception(error);
+        }
+        
+        stmt.Close();
+        
+        utility.DeleteCartProductArray(cartTableIdArray);
+    }
+       
+    connector.Close();
+    
+    return true;
+}
+
 func AddCartProduct(cartProductRequest model.CartProductRequest) bool {
     connector := utility.GetConnection();
      
